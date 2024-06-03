@@ -34,6 +34,7 @@ class MemberController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
         $request->validate([
@@ -42,6 +43,7 @@ class MemberController extends Controller
             'phone' => 'required',
             'ville' => 'required',
             'subscription' => 'required',
+            'sexe' => 'required',
             'imagemembers' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -54,6 +56,7 @@ class MemberController extends Controller
             'phone' => $request->phone,
             'ville' => $request->ville,
             'subscription' => $request->subscription,
+            'sexe' => $request->sexe,
             'imagemembers' => $imageName,
         ]);
 
@@ -91,14 +94,19 @@ class MemberController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'fname' => 'required',
             'lname' => 'required',
             'phone' => 'required',
             'ville' => 'required',
             'subscription' => 'required',
-            'imagemembers' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'sexe' => 'required',
+            'imagemembers' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
         $member = Member::find($id);
 
@@ -108,9 +116,9 @@ class MemberController extends Controller
             $member->imagemembers = $imageName;
         }
 
-        $member->update($request->all());
+        $member->update($request->except(['imagemembers']));
 
-        return $member;
+        return response()->json($member);
     }
 
     /**

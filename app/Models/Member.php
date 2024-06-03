@@ -15,5 +15,6 @@ class Member extends Model
         'ville',
         'subscription',
         'imagemembers',
+        'sexe',
     ];
 }
