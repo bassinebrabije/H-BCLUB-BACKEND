@@ -25,4 +25,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::resource('inscriptions', InscriptionController::class);
 Route::resource('trainers', TrainerController::class);
 Route::resource('members', MemberController::class);
-Route::post('/send-email', [EmailController::class, 'sendEmail']);
+
+Route::get('download-members-pdf', [MemberController::class, 'downloadPDF']);
+
+Route::post('send-email', [EmailController::class, 'sendEmail']);
+
+Route::get('download-pdf', [InscriptionController::class, 'downloadPDF']);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use PDF;
 
 class MemberController extends Controller
 {
@@ -17,7 +18,14 @@ class MemberController extends Controller
     {
         return response()->json(Member::all(), 200);
     }
+    public function downloadPDF()
+    {
+        $members = Member::all();
 
+        $pdf = PDF::loadView('pdf.members', compact('members'));
+
+        return $pdf->download('members.pdf');
+    }
     /**
      * Store a newly created resource in storage.
      *

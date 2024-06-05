@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Inscription;
 use Illuminate\Http\Request;
+use PDF;
 
 class InscriptionController extends Controller
 {
@@ -21,11 +22,16 @@ class InscriptionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
 
+    public function downloadPDF()
+    {
+        $inscriptions = Inscription::all();
+
+        $pdf = PDF::loadView('pdf.inscriptions', compact('inscriptions'));
+
+        return $pdf->download('inscriptions.pdf');
+
+    }
     /**
      * Store a newly created resource in storage.
      *
