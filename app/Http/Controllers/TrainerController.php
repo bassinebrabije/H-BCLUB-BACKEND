@@ -43,7 +43,7 @@ class TrainerController extends Controller
             'email' => 'required|email|unique:trainers',
             'ville' => 'required',
             'sexe' => 'required',
-            'experience' => 'required|integer',
+            'about' => 'required',
             'img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -57,7 +57,7 @@ class TrainerController extends Controller
             'email' => $request->email,
             'ville' => $request->ville,
             'sexe' => $request->sexe,
-            'experience' => $request->experience,
+            'about' => $request->about,
             'img' => $imageName,
         ]);
 
@@ -102,7 +102,7 @@ class TrainerController extends Controller
             'email' => 'required|email|unique:trainers,email,' . $id,
             'ville' => 'required',
             'sexe' => 'required',
-            'experience' => 'required|integer',
+            'about' => 'required',
             'img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 

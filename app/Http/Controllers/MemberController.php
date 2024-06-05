@@ -15,17 +15,7 @@ class MemberController extends Controller
      */
     public function index()
     {
-        return Member::all();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response()->json(Member::all(), 200);
     }
 
     /**
@@ -34,10 +24,9 @@ class MemberController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-
     public function store(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'fname' => 'required',
             'lname' => 'required',
             'phone' => 'required',
@@ -50,17 +39,12 @@ class MemberController extends Controller
         $imageName = time() . '.' . $request->imagemembers->extension();
         $request->imagemembers->move(public_path('images'), $imageName);
 
-        $member = Member::create([
-            'fname' => $request->fname,
-            'lname' => $request->lname,
-            'phone' => $request->phone,
-            'ville' => $request->ville,
-            'subscription' => $request->subscription,
-            'sexe' => $request->sexe,
-            'imagemembers' => $imageName,
-        ]);
+        $member = Member::create(array_merge(
+            $validatedData,
+            ['imagemembers' => $imageName]
+        ));
 
-        return $member;
+        return response()->json($member, 201);
     }
 
     /**
@@ -71,18 +55,8 @@ class MemberController extends Controller
      */
     public function show($id)
     {
-        return Member::find($id);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $member = Member::findOrFail($id);
+        return response()->json($member, 200);
     }
 
     /**
@@ -94,31 +68,25 @@ class MemberController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
+        $validatedData = $request->validate([
             'fname' => 'required',
             'lname' => 'required',
             'phone' => 'required',
             'ville' => 'required',
             'subscription' => 'required',
             'sexe' => 'required',
-            'imagemembers' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
+        $member = Member::findOrFail($id);
 
-        $member = Member::find($id);
+        // Update the member fields
+        $member->update($validatedData);
 
-        if ($request->hasFile('imagemembers')) {
-            $imageName = time() . '.' . $request->imagemembers->extension();
-            $request->imagemembers->move(public_path('images'), $imageName);
-            $member->imagemembers = $imageName;
-        }
+        // Update the created_at field to the current timestamp
+        $member->updated_at = now();
+        $member->save();
 
-        $member->update($request->except(['imagemembers']));
-
-        return response()->json($member);
+        return response()->json($member, 200);
     }
 
     /**
@@ -129,10 +97,14 @@ class MemberController extends Controller
      */
     public function destroy($id)
     {
-        $member = Member::find($id);
+        $member = Member::findOrFail($id);
+
         if ($member->imagemembers) {
             Storage::delete(public_path('images') . '/' . $member->imagemembers);
         }
-        return Member::destroy($id);
+
+        $member->delete();
+
+        return response()->json(null, 204);
     }
 }

@@ -15,7 +15,7 @@ class Trainer extends Model
         'email',
         'ville',
         'sexe',
-        'experience',
+        'about',
         'img',
     ];
 

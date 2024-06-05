@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\TrainerController;
@@ -24,3 +25,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::resource('inscriptions', InscriptionController::class);
 Route::resource('trainers', TrainerController::class);
 Route::resource('members', MemberController::class);
+Route::post('/send-email', [EmailController::class, 'sendEmail']);
