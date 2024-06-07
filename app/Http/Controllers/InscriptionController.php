@@ -59,6 +59,7 @@ class InscriptionController extends Controller
     public function show($id)
     {
         return Inscription::find($id);
+
     }
 
     /**

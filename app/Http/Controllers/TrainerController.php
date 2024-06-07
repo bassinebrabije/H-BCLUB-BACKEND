@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use PDF;
 
 class TrainerController extends Controller
 {
@@ -27,7 +28,14 @@ class TrainerController extends Controller
     {
         //
     }
+    public function downloadPDF()
+    {
+        $trainers = Trainer::all();
 
+        $pdf = PDF::loadView('pdf.trainers', compact('trainers'))->setPaper('a4', 'landscape');
+
+        return $pdf->download('trainers.pdf');
+    }
     /**
      * Store a newly created resource in storage.
      *

@@ -26,8 +26,10 @@ Route::resource('inscriptions', InscriptionController::class);
 Route::resource('trainers', TrainerController::class);
 Route::resource('members', MemberController::class);
 
+Route::post('send-email', [EmailController::class, 'sendEmail']);
+
 Route::get('download-members-pdf', [MemberController::class, 'downloadPDF']);
 
-Route::post('send-email', [EmailController::class, 'sendEmail']);
+Route::get('download-trainers-pdf', [TrainerController::class, 'downloadPDF']);
 
 Route::get('download-pdf', [InscriptionController::class, 'downloadPDF']);

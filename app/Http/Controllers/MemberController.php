@@ -22,7 +22,7 @@ class MemberController extends Controller
     {
         $members = Member::all();
 
-        $pdf = PDF::loadView('pdf.members', compact('members'));
+        $pdf = PDF::loadView('pdf.members', compact('members'))->setPaper('a4', 'landscape');
 
         return $pdf->download('members.pdf');
     }
@@ -38,6 +38,7 @@ class MemberController extends Controller
             'fname' => 'required',
             'lname' => 'required',
             'phone' => 'required',
+            'email' => 'required',
             'ville' => 'required',
             'subscription' => 'required',
             'sexe' => 'required',
@@ -80,6 +81,7 @@ class MemberController extends Controller
             'fname' => 'required',
             'lname' => 'required',
             'phone' => 'required',
+            'email' => 'required',
             'ville' => 'required',
             'subscription' => 'required',
             'sexe' => 'required',
