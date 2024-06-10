@@ -18,5 +18,8 @@ class Trainer extends Model
         'about',
         'img',
     ];
-
+    public function coaching()
+    {
+        return $this->hasMany(Coaching::class);
+    }
 }

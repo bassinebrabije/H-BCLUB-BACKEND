@@ -18,4 +18,10 @@ class Member extends Model
         'sexe',
         'email',
     ];
+
+    public function coaching()
+    {
+        return $this->hasMany(Coaching::class);
+    }
+
 }

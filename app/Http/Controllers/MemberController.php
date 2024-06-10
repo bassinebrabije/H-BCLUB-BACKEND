@@ -42,11 +42,14 @@ class MemberController extends Controller
             'ville' => 'required',
             'subscription' => 'required',
             'sexe' => 'required',
-            'imagemembers' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'imagemembers' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $imageName = time() . '.' . $request->imagemembers->extension();
-        $request->imagemembers->move(public_path('images'), $imageName);
+        $imageName = 'unknown.jpg';
+        if ($request->hasFile('imagemembers')) {
+            $imageName = time() . '.' . $request->imagemembers->extension();
+            $request->imagemembers->move(public_path('images'), $imageName);
+        }
 
         $member = Member::create(array_merge(
             $validatedData,
