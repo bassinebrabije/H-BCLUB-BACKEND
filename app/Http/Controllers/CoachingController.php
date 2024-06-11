@@ -4,12 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Coaching;
 use Illuminate\Http\Request;
+use PDF;
 
 class CoachingController extends Controller
 {
     public function index()
     {
         return Coaching::with(['member', 'trainer'])->get();
+    }
+    public function downloadPDF()
+    {
+        $coachings = Coaching::with('member', 'trainer')->get();
+
+        $pdf = PDF::loadView('pdf.coachings', compact('coachings'))->setPaper('a4', 'landscape');
+
+        return $pdf->download('coachings.pdf');
     }
 
     public function store(Request $request)

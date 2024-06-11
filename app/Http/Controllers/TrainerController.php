@@ -9,25 +9,13 @@ use PDF;
 
 class TrainerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        return Trainer::all();
+        return response()->json(Trainer::all(), 200);
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
     public function downloadPDF()
     {
         $trainers = Trainer::all();
@@ -36,15 +24,10 @@ class TrainerController extends Controller
 
         return $pdf->download('trainers.pdf');
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'fname' => 'required',
             'lastname' => 'required',
             'phone' => 'required',
@@ -55,66 +38,47 @@ class TrainerController extends Controller
             'img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
+        $validatedData['email'] = strtolower($validatedData['email']);
+        $validatedData['fname'] = strtolower($validatedData['fname']);
+        $validatedData['lastname'] = strtolower($validatedData['lastname']);
+
         $imageName = time() . '.' . $request->img->extension();
         $request->img->move(public_path('images'), $imageName);
 
-        $trainer = Trainer::create([
-            'fname' => $request->fname,
-            'lastname' => $request->lastname,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'ville' => $request->ville,
-            'sexe' => $request->sexe,
-            'about' => $request->about,
-            'img' => $imageName,
-        ]);
+        $trainer = Trainer::create(array_merge(
+            $validatedData,
+            ['img' => $imageName]
+        ));
 
-        return $trainer;
+        return response()->json($trainer, 201);
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        return Trainer::find($id);
+        $trainer = Trainer::findOrFail($id);
+        return response()->json($trainer, 200);
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'fname' => 'required',
             'lastname' => 'required',
             'phone' => 'required',
-            'email' => 'required|email|unique:trainers,email,' . $id,
+            'email' => 'required',
             'ville' => 'required',
             'sexe' => 'required',
             'about' => 'required',
             'img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $trainer = Trainer::find($id);
+        $trainer = Trainer::findOrFail($id);
+
+        $validatedData['email'] = strtolower($validatedData['email']);
+        $validatedData['fname'] = strtolower($validatedData['fname']);
+        $validatedData['lastname'] = strtolower($validatedData['lastname']);
 
         if ($request->hasFile('img')) {
             $imageName = time() . '.' . $request->img->extension();
@@ -122,23 +86,23 @@ class TrainerController extends Controller
             $trainer->img = $imageName;
         }
 
-        $trainer->update($request->all());
+        $trainer->update($validatedData);
 
-        return $trainer;
+        return response()->json($trainer, 200);
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        $trainer = Trainer::find($id);
+        $trainer = Trainer::findOrFail($id);
+
         if ($trainer->img) {
             Storage::delete(public_path('images') . '/' . $trainer->img);
         }
-        return Trainer::destroy($id);
+
+        $trainer->delete();
+
+        return response()->json(null, 204);
+
     }
 }

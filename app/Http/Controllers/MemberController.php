@@ -9,11 +9,7 @@ use PDF;
 
 class MemberController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         return response()->json(Member::all(), 200);
@@ -26,12 +22,7 @@ class MemberController extends Controller
 
         return $pdf->download('members.pdf');
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -44,6 +35,11 @@ class MemberController extends Controller
             'sexe' => 'required',
             'imagemembers' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        // Convert email, fname, and lname to lowercase
+        $validatedData['email'] = strtolower($validatedData['email']);
+        $validatedData['fname'] = strtolower($validatedData['fname']);
+        $validatedData['lname'] = strtolower($validatedData['lname']);
 
         $imageName = 'unknown.jpg';
         if ($request->hasFile('imagemembers')) {
@@ -59,25 +55,12 @@ class MemberController extends Controller
         return response()->json($member, 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $member = Member::findOrFail($id);
         return response()->json($member, 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
@@ -92,22 +75,18 @@ class MemberController extends Controller
 
         $member = Member::findOrFail($id);
 
-        // Update the member fields
+        $validatedData['email'] = strtolower($validatedData['email']);
+        $validatedData['fname'] = strtolower($validatedData['fname']);
+        $validatedData['lname'] = strtolower($validatedData['lname']);
+
         $member->update($validatedData);
 
-        // Update the created_at field to the current timestamp
         $member->updated_at = now();
         $member->save();
 
         return response()->json($member, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $member = Member::findOrFail($id);

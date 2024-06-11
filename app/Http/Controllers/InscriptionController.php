@@ -8,20 +8,11 @@ use PDF;
 
 class InscriptionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        return Inscription::all();
+        return response()->json(Inscription::all(), 200);
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
     public function downloadPDF()
     {
@@ -30,79 +21,55 @@ class InscriptionController extends Controller
         $pdf = PDF::loadView('pdf.inscriptions', compact('inscriptions'));
 
         return $pdf->download('inscriptions.pdf');
-
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'full_name' => 'required',
             'email' => 'required|email|unique:inscriptions',
             'phone_number' => 'required',
             'ville' => 'required',
         ]);
 
-        return Inscription::create($request->all());
+        $validatedData['email'] = strtolower($validatedData['email']);
+        $validatedData['full_name'] = strtolower($validatedData['full_name']);
+
+        $inscription = Inscription::create($validatedData);
+
+        return response()->json($inscription, 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        return Inscription::find($id);
-
+        $inscription = Inscription::findOrFail($id);
+        return response()->json($inscription, 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'full_name' => 'required',
             'email' => 'required|email|unique:inscriptions,email,' . $id,
             'phone_number' => 'required',
             'ville' => 'required',
         ]);
 
-        $inscription = Inscription::find($id);
-        $inscription->update($request->all());
+        $inscription = Inscription::findOrFail($id);
 
-        return $inscription;
+        $validatedData['email'] = strtolower($validatedData['email']);
+        $validatedData['full_name'] = strtolower($validatedData['full_name']);
+
+        $inscription->update($validatedData);
+
+        return response()->json($inscription, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        return Inscription::destroy($id);
+        $inscription = Inscription::findOrFail($id);
+        $inscription->delete();
+
+        return response()->json(null, 204);
     }
 }

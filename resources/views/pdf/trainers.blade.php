@@ -13,7 +13,10 @@ th, td {
   padding: 8px;
 }
 
-tr:nth-child(even){background-color: #f2f2f2}
+tr:nth-child(even)
+{
+    background-color: #f2f2f2
+}
 
 th {
   background-color: #FF0000;
@@ -32,7 +35,7 @@ th {
                 <th>Email</th>
                 <th>Ville</th>
                 <th>Gender</th>
-                <th>about</th>
+                {{-- <th>about</th> --}}
                 <th>Joined At</th>
             </tr>
         </thead>
@@ -45,7 +48,7 @@ th {
                 <td>{{ $trainer->email  }}</td>
                 <td>{{ $trainer->ville }}</td>
                  <td>{{ $trainer->sexe }}</td>
-                <td>{{ $trainer->about }}</td>
+                {{-- <td>{{ $trainer->about }}</td> --}}
                 <td>{{ $trainer->created_at }}</td>
 
             </tr>

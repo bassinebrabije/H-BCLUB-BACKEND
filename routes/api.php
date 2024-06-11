@@ -24,10 +24,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::resource('inscriptions', InscriptionController::class);
 Route::resource('trainers', TrainerController::class);
 Route::resource('members', MemberController::class);
-
-Route::apiResource('coaching', CoachingController::class);
+Route::resource('coaching', CoachingController::class);
 
 Route::post('send-email', [EmailController::class, 'sendEmail']);
+
+Route::get('download-coaching-pdf', [CoachingController::class, 'downloadPDF']);
 
 Route::get('download-members-pdf', [MemberController::class, 'downloadPDF']);
 
