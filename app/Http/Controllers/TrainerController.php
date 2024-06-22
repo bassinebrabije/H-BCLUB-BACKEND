@@ -16,9 +16,25 @@ class TrainerController extends Controller
 
     }
 
-    public function downloadPDF()
+    public function downloadPDF(Request $request)
     {
-        $trainers = Trainer::all();
+        $ville = $request->query('ville');
+
+        if ($ville) {
+            \Log::info('Received ville parameter: ' . $ville);
+            $trainers = Trainer::where('ville', $ville)->get();
+            if ($trainers->isEmpty()) {
+                \Log::info('No trainers found for the specified ville: ' . $ville);
+                return response()->json(['error' => 'No trainers found for the specified ville'], 404);
+            }
+        } else {
+            \Log::info('No ville parameter received. Fetching all trainers.');
+            $trainers = Trainer::all();
+            if ($trainers->isEmpty()) {
+                \Log::info('No trainers found in the database.');
+                return response()->json(['error' => 'No trainers found'], 404);
+            }
+        }
 
         $pdf = PDF::loadView('pdf.trainers', compact('trainers'))->setPaper('a4', 'landscape');
 

@@ -14,9 +14,25 @@ class MemberController extends Controller
     {
         return response()->json(Member::all(), 200);
     }
-    public function downloadPDF()
+    public function downloadPDF(Request $request)
     {
-        $members = Member::all();
+        $ville = $request->query('ville');
+
+        if ($ville) {
+            \Log::info('Received ville parameter: ' . $ville);
+            $members = Member::where('ville', $ville)->get();
+            if ($members->isEmpty()) {
+                \Log::info('No members found for the specified ville: ' . $ville);
+                return response()->json(['error' => 'No members found for the specified ville'], 404);
+            }
+        } else {
+            \Log::info('No ville parameter received. Fetching all members.');
+            $members = Member::all();
+            if ($members->isEmpty()) {
+                \Log::info('No members found in the database.');
+                return response()->json(['error' => 'No members found'], 404);
+            }
+        }
 
         $pdf = PDF::loadView('pdf.members', compact('members'))->setPaper('a4', 'landscape');
 
