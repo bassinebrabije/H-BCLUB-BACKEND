@@ -17,6 +17,7 @@ class InscriptionController extends Controller
     public function downloadPDF(Request $request)
     {
         $ville = $request->query('ville');
+
         if ($ville) {
             \Log::info('Received ville parameter: ' . $ville);
             $inscriptions = Inscription::where('ville', $ville)->get();
@@ -32,6 +33,7 @@ class InscriptionController extends Controller
                 return response()->json(['error' => 'No Inscription found'], 404);
             }
         }
+
         $pdf = PDF::loadView('pdf.inscriptions', compact('inscriptions'))->setPaper('a4', 'landscape');
         return $pdf->download('inscriptions.pdf');
     }

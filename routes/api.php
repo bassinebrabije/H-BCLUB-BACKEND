@@ -30,6 +30,8 @@ Route::resource('coaching', CoachingController::class);
 
 Route::post('send-email', [EmailController::class, 'sendEmail']);
 
+Route::post('send-admin-email', [EmailController::class, 'sendAdminEmail']);
+
 /*-------------------------------------------*/
 
 /*API for  get Pdf  all tables*/

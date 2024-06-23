@@ -1,9 +1,8 @@
-
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
-    <title></title>
+    <title>Welcome to HBGYM</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -37,38 +36,6 @@
 
         .bg-white {
             background-color: #fff;
-        }
-
-        /* Header Styles */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        header a {
-            text-decoration: none;
-        }
-
-        /* Nav Styles */
-        nav {
-            display: flex;
-            gap: 1.5rem;
-            /* equivalent to 6 */
-        }
-
-        nav a {
-            font-size: 0.875rem;
-            /* equivalent to text-sm */
-            color: #4b5563;
-            /* equivalent to text-gray-600 */
-            transition-property: color;
-            transition-duration: 0.3s;
-        }
-
-        nav a:hover {
-            color: #3b82f6;
-            /* equivalent to hover:text-blue-500 */
         }
 
         /* Main Styles */
@@ -135,37 +102,30 @@
 </head>
 
 <body>
-    <!-- HIDDEN PREHEADER TEXT -->
-
     <section class="max-w-2xl px-6 py-8 mx-auto bg-white">
         <main class="mt-8">
-            <img class="object-cover w-full h-56 rounded-lg md:h-72" src="https://i.ibb.co/4FTr95g/Testimonial.png"
-                alt="">
+            <img class="object-cover w-full h-56 rounded-lg md:h-72" src="https://i.ibb.co/4FTr95g/Testimonial.png" alt="">
 
-            <h2 class="mt-6 text-gray-700">Hi  {{ $details['fullName'] }},</h2>
+            <h2 class="mt-6 text-gray-700">Hi {{ $details['fname'] }} {{ $details['lname'] }},</h2>
 
             <p class="mt-2 leading-loose text-gray-600">
-                Thank you for choosing HBGYM! Your registration marks the beginning of an exciting journey towards
-                better health and
-                fitness. We're thrilled to have you join our community. Get ready to unlock your full potential and
-                achieve your fitness
-                goals with us!
+                Thank you for choosing HBGYM in Casablanca! Your registration marks the beginning of an exciting journey with us as a valued admin. We're thrilled to have you join our team. Get ready to unlock your full potential and help us achieve our mission of promoting health and fitness within our community. Together, we'll achieve great things!
             </p>
 
-            <p class="mt-2 text-gray-600">
-                Thanks, <br>
-                HB GYM
-            </p>
+            <p>Your account has been created successfully. Here are your account details:</p>
 
+            <p>Url To Login: <a href="http://localhost:3000/">HBClub.ma</a></p>
+            <p><strong>Username:</strong> {{ $details['username'] }}</p>
+            <p><strong>Password:</strong> {{ $details['password'] }}</p>
 
+            <p class="mt-2 text-gray-600">Thank you for joining us!</p>
+            <p>HB GYM</p>
         </main>
 
-
         <footer class="mt-8">
-            <p class="mt-3 text-gray-500">© {{ date('Y') }} HB GYM. All Rights Reserved.</p>
+            <p class="mt-3 text-gray-500">© {{ date('Y') }} Brabije&Hamer GYM. All Rights Reserved.</p>
         </footer>
     </section>
-
 </body>
 
 </html>
