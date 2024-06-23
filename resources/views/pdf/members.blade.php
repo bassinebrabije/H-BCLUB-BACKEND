@@ -24,11 +24,12 @@
     </style>
 </head>
 <body>
-
-    <h1>Members List</h1>
+<img src="{{ public_path('images/logo.jpg') }}" width="100px" alt="logo">
+    <h1>Members List  :</h1>
     <table>
         <thead>
             <tr>
+                <th></th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Phone</th>
@@ -37,11 +38,13 @@
                 <th>Gender</th>
                 <th>Subscription</th>
                 <th>Joined At</th>
+                  
             </tr>
         </thead>
         <tbody>
             @foreach ($members as $member)
             <tr>
+                <img src="{{ public_path('images/' . $member->imagemembers) }}" width="100px" alt="imagemembers">
                 <td>{{ $member->fname }}</td>
                 <td>{{ $member->lname }}</td>
                 <td>{{ $member->phone }}</td>
@@ -49,8 +52,9 @@
                 <td>{{ $member->ville }}</td>
                 <td>{{ $member->sexe }}</td>
                 <td>{{ $member->subscription }}</td>
-               
                 <td>{{ $member->created_at }}</td>
+                   
+
             </tr>
             @endforeach
         </tbody>

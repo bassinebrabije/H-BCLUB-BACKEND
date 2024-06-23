@@ -35,9 +35,7 @@ class TrainerController extends Controller
                 return response()->json(['error' => 'No trainers found'], 404);
             }
         }
-
         $pdf = PDF::loadView('pdf.trainers', compact('trainers'))->setPaper('a4', 'landscape');
-
         return $pdf->download('trainers.pdf');
     }
 

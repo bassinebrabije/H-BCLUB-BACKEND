@@ -21,10 +21,12 @@
     </style>
 </head>
 <body>
+    <img src="{{ public_path('images/logo.jpg') }}" width="100px" alt="logo">
     <h1>Admins List</h1>
     <table>
         <thead>
             <tr>
+           
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>

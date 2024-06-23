@@ -42,4 +42,4 @@ Route::get('download-trainers-pdf', [TrainerController::class, 'downloadPDF']);
 
 Route::get('download-admins-pdf', [AuthController::class, 'downloadPDF']);
 
-Route::get('download-pdf', [InscriptionController::class, 'downloadPDF']);
+Route::get('download-inscription-pdf', [InscriptionController::class, 'downloadPDF']);

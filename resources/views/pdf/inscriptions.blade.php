@@ -2,22 +2,30 @@
 <html>
 <head>
     <title>Inscriptions List</title>
-    <style>
+       <style>
         table {
-            width: 100%;
             border-collapse: collapse;
+            width: 100%;
         }
-        table, th, td {
-            border: 1px solid black;
-        }
+
         th, td {
-            padding: 10px;
             text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        th {
+            background-color: #FF0000;
+            color: white;
         }
     </style>
 </head>
 <body>
-    <h1>Inscriptions List</h1>
+    <img src="{{ public_path('images/logo.jpg') }}" width="100px" alt="logo">
+    <h1>Request List</h1>
     <table>
         <thead>
             <tr>

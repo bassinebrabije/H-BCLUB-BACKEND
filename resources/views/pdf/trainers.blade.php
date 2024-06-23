@@ -29,6 +29,7 @@ th {
     <table>
         <thead>
             <tr>
+                <th></th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Phone</th>
@@ -42,6 +43,7 @@ th {
         <tbody>
             @foreach ($trainers as $trainer)
             <tr>
+                
                 <td>{{ $trainer->fname }}</td>
                 <td>{{ $trainer->lastname }}</td>
                 <td>{{ $trainer->phone }}</td>

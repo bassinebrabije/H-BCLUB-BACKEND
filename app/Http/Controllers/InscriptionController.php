@@ -14,15 +14,27 @@ class InscriptionController extends Controller
         return response()->json(Inscription::all(), 200);
     }
 
-    public function downloadPDF()
+    public function downloadPDF(Request $request)
     {
-        $inscriptions = Inscription::all();
-
-        $pdf = PDF::loadView('pdf.inscriptions', compact('inscriptions'));
-
+        $ville = $request->query('ville');
+        if ($ville) {
+            \Log::info('Received ville parameter: ' . $ville);
+            $inscriptions = Inscription::where('ville', $ville)->get();
+            if ($inscriptions->isEmpty()) {
+                \Log::info('No Inscription found for the specified ville: ' . $ville);
+                return response()->json(['error' => 'No Inscription found for the specified ville'], 404);
+            }
+        } else {
+            \Log::info('No ville parameter received. Fetching all Inscription.');
+            $inscriptions = Inscription::all();
+            if ($inscriptions->isEmpty()) {
+                \Log::info('No Inscription found in the database.');
+                return response()->json(['error' => 'No Inscription found'], 404);
+            }
+        }
+        $pdf = PDF::loadView('pdf.inscriptions', compact('inscriptions'))->setPaper('a4', 'landscape');
         return $pdf->download('inscriptions.pdf');
     }
-
     public function store(Request $request)
     {
         $validatedData = $request->validate([
