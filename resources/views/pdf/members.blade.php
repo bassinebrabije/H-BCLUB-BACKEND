@@ -29,7 +29,7 @@
     <table>
         <thead>
             <tr>
-                <th></th>
+                {{-- <th></th> --}}
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Phone</th>
@@ -44,7 +44,7 @@
         <tbody>
             @foreach ($members as $member)
             <tr>
-                <img src="{{ public_path('images/' . $member->imagemembers) }}" width="100px" alt="imagemembers">
+                {{-- <img src="{{ public_path('images/' . $member->imagemembers) }}" width="100px" alt="imagemembers"> --}}
                 <td>{{ $member->fname }}</td>
                 <td>{{ $member->lname }}</td>
                 <td>{{ $member->phone }}</td>
